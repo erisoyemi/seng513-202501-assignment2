@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Page</title>
+    <link rel="stylesheet" href="home.css">
+
+</head>
+<body>
+    <div class="quiz-container">
+        <h2>Quiz Question</h2>
+        <p>What is the capital of France?</p>
+        <div class="options">
+            <label><input type="radio" name="quiz" value="London"> London</label>
+            <label><input type="radio" name="quiz" value="Paris"> Paris</label>
+            <label><input type="radio" name="quiz" value="Berlin"> Berlin</label>
+            <label><input type="radio" name="quiz" value="Madrid"> Madrid</label>
+        </div>
+        <button onclick="checkAnswer()">Submit</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function checkAnswer() {
+            const options = document.getElementsByName('quiz');
+            let selectedAnswer;
+            for (const option of options) {
+                if (option.checked) {
+                    selectedAnswer = option.value;
+                }
+            }
+            if (selectedAnswer === "Paris") {
+                document.getElementById('result').textContent = "Correct!";
+            } else {
+                document.getElementById('result').textContent = "Incorrect, try again.";
+            }
+        }
+    </script>
+</body>
+</html>

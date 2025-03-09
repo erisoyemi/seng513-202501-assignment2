@@ -18,11 +18,16 @@
             <label><input type="radio" name="quiz" value="Madrid"> Madrid</label>
         </div>
         <button onclick="checkAnswer()">Submit</button>
+        <button onclick="">Next Question</button>
+        <div class="score" id="totalscore"> Total Score = </div>
         <p id="result"></p>
     </div>
 
     <script>
+        let score = 0;
+        let totalscore = 0;
         function checkAnswer() {
+            totalscore = totalscore +1;
             const options = document.getElementsByName('quiz');
             let selectedAnswer;
             for (const option of options) {
@@ -31,6 +36,8 @@
                 }
             }
             if (selectedAnswer === "Paris") {
+                score +=1;
+                document.getElementById('totalscore').textContent = score;
                 document.getElementById('result').textContent = "Correct!";
             } else {
                 document.getElementById('result').textContent = "Incorrect, try again.";

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,44 +6,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Page</title>
     <link rel="stylesheet" href="home.css">
-
 </head>
 <body>
     <div class="quiz-container">
         <h2>Quiz Question</h2>
-        <p>What is the capital of France?</p>
-        <div class="options">
-            <label><input type="radio" name="quiz" value="London"> London</label>
-            <label><input type="radio" name="quiz" value="Paris"> Paris</label>
-            <label><input type="radio" name="quiz" value="Berlin"> Berlin</label>
-            <label><input type="radio" name="quiz" value="Madrid"> Madrid</label>
+        <p id="question-text">Loading question...</p> <!-- Dynamically displayed question -->
+        <div class="options" id="options-container">
+            <!-- Radio buttons for options will be dynamically added here -->
         </div>
         <button onclick="checkAnswer()">Submit</button>
-        <button onclick="">Next Question</button>
-        <div class="score" id="totalscore"> Total Score = </div>
+        <button onclick="nextQuestion()">Next Question</button>
+        <div class="score" id="totalscore"> Total Score = 0 </div>
         <p id="result"></p>
     </div>
 
-    <script>
+    <script type="module">
+        import { getQuestion } from './question_gen.js';
+        import { Question } from './question.js';
+
         let score = 0;
-        let totalscore = 0;
+        let currentQuestion = null;
+
+        function displayQuestion(questionInstance) {
+            const questionText = document.getElementById('question-text');
+            const optionsContainer = document.getElementById('options-container');
+            
+            // Set the question text
+            questionText.textContent = questionInstance.getQuestion();
+            
+            // Clear the options container and dynamically create the options
+            optionsContainer.innerHTML = '';
+
+            const choices = questionInstance.getChoices();
+            choices.forEach(choice => {
+                const label = document.createElement('label');
+                label.innerHTML = `<input type="radio" name="quiz" value="${choice}"> ${choice}`;
+                optionsContainer.appendChild(label);
+                optionsContainer.appendChild(document.createElement('br'));
+            });
+        }
+
         function checkAnswer() {
-            totalscore = totalscore +1;
             const options = document.getElementsByName('quiz');
-            let selectedAnswer;
+            let selectedAnswer = null;
             for (const option of options) {
                 if (option.checked) {
                     selectedAnswer = option.value;
                 }
             }
-            if (selectedAnswer === "Paris") {
-                score +=1;
-                document.getElementById('totalscore').textContent = score;
+            
+            if (selectedAnswer === currentQuestion.getCorrectAnswer()) {
+                score++;
                 document.getElementById('result').textContent = "Correct!";
             } else {
                 document.getElementById('result').textContent = "Incorrect, try again.";
             }
+            document.getElementById('totalscore').textContent = "Total Score = " + score;
         }
+
+        async function nextQuestion() {
+            const questionData = await getQuestion("easy");
+
+            if (questionData) {
+                currentQuestion = new Question(questionData);
+                displayQuestion(currentQuestion);
+            } else {
+                document.getElementById('question-text').textContent = "No more questions available.";
+                document.getElementById('options-container').innerHTML = '';
+            }
+        }
+
+        // Bind the functions to the window to make it accessible globally
+        window.checkAnswer = checkAnswer;
+        window.nextQuestion = nextQuestion;
+
+
+
+        window.onload = function() {
+            nextQuestion();
+        };
     </script>
 </body>
 </html>

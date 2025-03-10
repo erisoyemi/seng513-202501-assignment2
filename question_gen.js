@@ -45,10 +45,13 @@ export async function fetchHard(difficulty = "hard") {
     }
 }
 
-export function getQuestion(difficulty) {
-    let questionArray = difficulty === "easy" ? easyQuestions :
-                        difficulty === "medium" ? mediumQuestions :
-                        hardQuestions;
+export async function getQuestion(difficulty) {
+    let fetchFunction = difficulty === "easy" ? fetchEasy :
+                        difficulty === "medium" ? fetchMedium :
+                        fetchHard;
+
+    // Fetch questions asynchronously
+    let questionArray = await fetchFunction();
 
     if (questionArray.length === 0) {
         return null; // No more questions of this difficulty

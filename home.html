@@ -25,7 +25,7 @@
     </div>
 
     <script type="module">
-        import { getQuestion } from './question_gen.js';
+        import { questionGenerator, loadAllQuestions } from './question_gen.js';
         import { Question } from './question.js';
         import { User } from './user.js';
 
@@ -34,8 +34,9 @@
         }
 
         let currentQuestion = null;
-        let username = localStorage.getItem("quizUsername") || "Guest"; // Default to Guest if no name
+        let username = localStorage.getItem("quizUsername")
         let user = new User(username);
+        let questionGen = questionGenerator(); 
 
         document.getElementById('username-display').textContent = `Player: ${user.getUsername()}`;
 
@@ -58,27 +59,30 @@
             });
         }
 
-        function checkAnswer() {
+        async function checkAnswer() {
             const options = document.getElementsByName('quiz');
             let selectedAnswer = null;
             for (const option of options) {
                 if (option.checked) {
                     selectedAnswer = option.value;
+                    // Disable options after answer submission
+                    options.forEach(option => option.disabled = true);
                 }
-            }
-            
+            }           
             if (selectedAnswer === currentQuestion.getCorrectAnswer()) {
                 user.addScore(true); 
                 document.getElementById('result').textContent = "Correct!";
+                await questionGen.next("correct"); // Inform generator about correct answer
             } else {
                 user.addScore(false);
                 document.getElementById('result').textContent = `Incorrect, the correct answer was: ${currentQuestion.getCorrectAnswer()}`;
+                await questionGen.next("incorrect"); // Inform generator about incorrect answer
             }
             document.getElementById('totalscore').textContent = "Total Score = " + user.getCurrentScore();
         }
 
         async function nextQuestion() {
-            const questionData = await getQuestion("easy");
+            const { value: questionData } = await questionGen.next(); // Get the next question from generator
 
             if (questionData) {
                 currentQuestion = new Question(questionData);
@@ -90,7 +94,7 @@
             }
         }
 
-        function restartQuiz() {
+        async function restartQuiz() {
             user.saveScore(); 
 
             const scoreHistory = user.getScoreHistory();
@@ -103,7 +107,10 @@
 
             user.currentScore = 0; 
             document.getElementById('totalscore').textContent = "Total Score = 0";
-            document.getElementById('result').textContent = "";
+            document.getElementById('result').textContent = "";    
+
+        //    await loadAllQuestions();
+            questionGen = questionGenerator();
             nextQuestion(); 
         }
 
@@ -112,8 +119,12 @@
         window.nextQuestion = nextQuestion;
         window.restartQuiz = restartQuiz;
 
-        window.onload = function() {
-            nextQuestion();
+        window.onload = async function() {
+            await loadAllQuestions();
+            if (!questionGen) {  
+                questionGen = questionGenerator();
+            }
+            nextQuestion();  
         };
     </script>
 </body>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the Quiz</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h2>Welcome to the Quiz!</h2>
+        <label for="username-input">Enter Your Username:</label>
+        <input type="text" id="username-input" placeholder="Enter your username">
+        <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <script>
+        function startQuiz() {
+            const username = document.getElementById("username-input").value.trim();
+            if (username === "") {
+                alert("Please enter a name to continue.");
+                return;
+            }
+            localStorage.setItem("quizUsername", username); // Store username for quiz page
+            window.location.href = "home.html"; // Redirect to quiz page
+        }
+    </script>
+</body>
+</html>

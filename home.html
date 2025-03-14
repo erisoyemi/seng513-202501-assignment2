@@ -9,7 +9,7 @@
 <body>
     <div class="quiz-container">
         <h2>Quiz Question</h2>
-        <p id="username-display">Player:</p>
+        <p id="username-display"></p>
         <p id="question-text">Loading question...</p> <!-- Dynamically displayed question -->
         <div class="options" id="options-container">
             <!-- Radio buttons for options will be dynamically added here -->
@@ -29,10 +29,15 @@
         import { Question } from './question.js';
         import { User } from './user.js';
 
-        let currentQuestion = null;
-        let user = new User("User1");
+        if (!localStorage.getItem("quizUsername")) {
+            window.location.href = "welcome.html";
+        }
 
-        document.getElementById('username-display').innerHTML = `Username: ${user.getUsername()}`;
+        let currentQuestion = null;
+        let username = localStorage.getItem("quizUsername") || "Guest"; // Default to Guest if no name
+        let user = new User(username);
+
+        document.getElementById('username-display').textContent = `Player: ${user.getUsername()}`;
 
         function displayQuestion(questionInstance) {
             const questionText = document.getElementById('question-text');
@@ -96,6 +101,7 @@
                 document.getElementById('history-list').textContent = "None";
             }
 
+            user.currentScore = 0; 
             document.getElementById('totalscore').textContent = "Total Score = 0";
             document.getElementById('result').textContent = "";
             nextQuestion(); 

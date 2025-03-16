@@ -1,8 +1,8 @@
 export class Question{
     constructor(question) {
-        this.question = question.question;
-        this.correctAnswer = question.correct_answer;
-        this.incorrectAnswers = question.incorrect_answers;
+        this.question = this.decodeHTML(question.question);
+        this.correctAnswer = this.decodeHTML(question.correct_answer);
+        this.incorrectAnswers = question.incorrect_answers.map(ans => this.decodeHTML(ans));
         this.difficulty = question.difficulty;
         this.category = question.category
         this.question_type = question.type
@@ -18,6 +18,12 @@ export class Question{
         Correct Answer: ${this.correctAnswer}
         Incorrect Answers: ${this.incorrectAnswers.join(", ")}
         `;
+    }
+
+    decodeHTML(html) {
+        const parser = new DOMParser();
+        const decodedString = parser.parseFromString(html, "text/html").body.textContent;
+        return decodedString;
     }
 
     getQuestion(){

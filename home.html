@@ -10,6 +10,7 @@
     <div class="quiz-container">
         <h2>Quiz Question</h2>
         <p id="username-display">Player:</p>
+        <p id="question-difficulty">Difficulty:</p>
         <p id="question-text">Loading question...</p> <!-- Dynamically displayed question -->
         <div class="options" id="options-container">
             <!-- Radio buttons for options will be dynamically added here -->
@@ -33,10 +34,13 @@
         let user = new User("User1");
 
         document.getElementById('username-display').innerHTML = `Username: ${user.getUsername()}`;
+        
 
         function displayQuestion(questionInstance) {
             const questionText = document.getElementById('question-text');
             const optionsContainer = document.getElementById('options-container');
+            //document.getElementById('question-difficulty').textContent = `Question Difficulty: ${currentQuestion.getDIfficulty()}`; 
+
             
             // Set the question text
             questionText.textContent = questionInstance.getQuestion();
@@ -77,7 +81,7 @@
 
             if (questionData) {
                 currentQuestion = new Question(questionData);
-                document.getElementById('options-container').innerHTML = ''; 
+                document.getElementById('options-container').innerHTML = '';
                 displayQuestion(currentQuestion);
             } else {
                 document.getElementById('question-text').textContent = "No more questions available.";

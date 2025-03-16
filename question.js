@@ -32,4 +32,8 @@ export class Question{
         return this.correctAnswer;
     }
 
+    getDifficulty(){
+        return this.difficulty;
+    }
+
 }

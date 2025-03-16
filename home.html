@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="home.css">
 </head>
 <body>
+    <div class="welcome-container">
+        <h1>Welcome to the Quiz</h1>
+    </div>
     <div class="quiz-container">
         <h2>Quiz Question</h2>
         <p id="username-display">Player:</p>
@@ -44,7 +47,7 @@
         function displayQuestion(questionInstance) {
             const questionText = document.getElementById('question-text');
             const optionsContainer = document.getElementById('options-container');
-            //document.getElementById('question-difficulty').textContent = `Question Difficulty: ${currentQuestion.getDIfficulty()}`; 
+            document.getElementById('question-difficulty').textContent = `Question Difficulty: ${questionInstance.getDIfficulty()}`; 
 
             
             // Set the question text

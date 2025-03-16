@@ -4,13 +4,14 @@ body {
     margin: 50px;
     border-color: black;
     font-family: 'Times New Roman', Times, serif;
+    background-color: lightgrey;
 }
 .quiz-container {
     background-color: rgb(141, 206, 236);
     max-width: 80%;
     margin: auto;
     padding: 20px;
-    border: 2px solid #ccc;
+    border: 2px solid black;
     border-radius: 10px;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
 }
@@ -21,4 +22,17 @@ body {
 .score{
     font-size: 20px;
     padding: 10px;
+}
+
+.welcome-container{
+    text-align: center;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+    background-color: blanchedalmond;
+    margin: auto;
+    margin-bottom: 2%;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+
 }

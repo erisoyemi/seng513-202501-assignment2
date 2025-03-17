@@ -13,14 +13,14 @@
     <div class="quiz-container">
         <h2>Quiz Question</h2>
         <p id="username-display">Player:</p>
-        <p id="question-difficulty">Difficulty:</p>
+        <p id="question-difficulty">Question Difficulty:</p>
         <p id="question-text">Loading question...</p> <!-- Dynamically displayed question -->
         <div class="options" id="options-container">
             <!-- Radio buttons for options will be dynamically added here -->
         </div>
-        <button onclick="checkAnswer()">Submit</button>
-        <button onclick="nextQuestion()">Next Question</button>
-        <button onclick="restartQuiz()">Restart Quiz</button>
+        <button onclick="checkAnswer.call()">Submit</button>
+        <button onclick="nextQuestion.call()">Next Question</button>
+        <button onclick="restartQuiz.call()">Restart Quiz</button>
         <div class="score" id="totalscore"> Total Score = 0 </div>
         <div id="score-history">
             Previous Best Score: <span id="history-list">None</span>
@@ -47,7 +47,7 @@
         function displayQuestion(questionInstance) {
             const questionText = document.getElementById('question-text');
             const optionsContainer = document.getElementById('options-container');
-            //document.getElementById('question-difficulty').textContent = `Question Difficulty: ${questionInstance.getDIfficulty()}`; 
+            document.getElementById('question-difficulty').textContent = `Question Difficulty: ${questionInstance.getDifficulty()}`; 
 
             
             // Set the question text
@@ -115,7 +115,7 @@
             document.getElementById('totalscore').textContent = "Total Score = 0";
             document.getElementById('result').textContent = "";    
 
-        //    await loadAllQuestions();
+            await loadAllQuestions();
             questionGen = questionGenerator();
             nextQuestion(); 
         }
